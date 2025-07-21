@@ -8,8 +8,11 @@ const ScollManger = (props) => {
   const data = useScroll();
   const lastScroll = useRef(0);
   const isAnimating = useRef(false);
+  const sectionChangeTimeout = useRef(null);
+  
   data.fill.classList.add("top-0");
   data.fill.classList.add("absolute");
+  
   useEffect(() => {
     gsap.to(data.el, {
       duration: 1,
@@ -22,23 +25,37 @@ const ScollManger = (props) => {
       },
     });
   }, [section]);
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (sectionChangeTimeout.current) {
+        clearTimeout(sectionChangeTimeout.current);
+      }
+    };
+  }, []);
+  
   useFrame(() => {
     if (isAnimating.current) {
       lastScroll.current = data.scroll.current;
       return;
     }
+    
     const curSection = Math.floor(data.scroll.current * data.pages);
-    if (data.scroll.current > lastScroll.current && curSection === 0) {
-      onSectionChange(1);
+    
+    // Handle section changes for all 3 sections
+    if (curSection !== section) {
+      if (sectionChangeTimeout.current) {
+        clearTimeout(sectionChangeTimeout.current);
+      }
+      sectionChangeTimeout.current = setTimeout(() => {
+        onSectionChange(curSection);
+      }, 100);
     }
-    if (
-      data.scroll.current < lastScroll.current &&
-      data.scroll.current < 1 / (data.pages - 1)
-    ) {
-      onSectionChange(0);
-    }
+    
     lastScroll.current = data.scroll.current;
   });
+  
   return null;
 };
 

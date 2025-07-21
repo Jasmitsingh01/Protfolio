@@ -24,15 +24,45 @@ export function Avtar(props) {
   const model=useRef();
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
-  const {animations:typeinganimation}=useFBX('animations/Typing.fbx');
-  const {animations:standinganimation}=useFBX('animations/Standing Idle.fbx');
-  const {animations:fallinganimation}=useFBX('animations/Falling Idle.fbx');
+  const {animations:typeinganimation}=useFBX('/src/animations/Typing.fbx');
+  const {animations:standinganimation}=useFBX('/src/animations/Standing Idle.fbx');
+  const {animations:fallinganimation}=useFBX('/src/animations/Falling Idle.fbx');
+  const {animations:callinganimation}=useFBX('/src/animations/calling.fbx');
 
   typeinganimation[0].name="Typing";
   standinganimation[0].name="Standing";
   fallinganimation[0].name="Falling";
-
-  const { actions }=useAnimations([typeinganimation[0],standinganimation[0],fallinganimation[0]],model);
+  callinganimation[0].name="Calling";
+  
+  // Create a custom waving animation
+  const createWavingAnimation = () => {
+    const wavingClip = standinganimation[0].clone();
+    wavingClip.name = "Waving";
+    
+    // Create a simple waving motion by modifying the right arm
+    const tracks = wavingClip.tracks;
+    tracks.forEach(track => {
+      if (track.name.includes("RightArm") && track.name.includes("rotation")) {
+        const times = track.times;
+        const values = track.values;
+        
+        // Add a gentle waving motion to the right arm
+        for (let i = 0; i < times.length; i++) {
+          const time = times[i];
+          const waveOffset = Math.sin(time * 3) * 0.5; // Faster waving motion
+          values[i * 4 + 0] += waveOffset; // X rotation for waving
+        }
+      }
+    });
+    
+    return wavingClip;
+  };
+  
+  const customWavingAnimation = createWavingAnimation();
+  
+  // Modify the animation to create a waving effect
+  // We'll use the standing animation as base but modify it slightly
+  const { actions }=useAnimations([typeinganimation[0],standinganimation[0],fallinganimation[0],customWavingAnimation,callinganimation[0]],model);
   useEffect(()=>{
    actions[animations].reset().play();
    return ()=>{
@@ -77,6 +107,7 @@ export function Avtar(props) {
 }
 
 useGLTF.preload('models/Jasmitsingh.glb')
-useFBX.preload('animations/Typing.fbx')
-useFBX.preload('animations/Standing Idle.fbx')
-useFBX.preload('animations/Falling Idle.fbx')
+useFBX.preload('/src/animations/Typing.fbx')
+useFBX.preload('/src/animations/Standing Idle.fbx')
+useFBX.preload('/src/animations/Falling Idle.fbx')
+useFBX.preload('/src/animations/calling.fbx')

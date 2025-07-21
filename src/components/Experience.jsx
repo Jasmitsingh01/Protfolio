@@ -7,6 +7,7 @@ import {
   useScroll,
 } from "@react-three/drei";
 import { Avtar } from "./Avtar";
+import { Mylapy as Laptop } from "./Mylapy";
 import { Leva } from "leva";
 import { Scene } from "./Scene";
 import { motion } from "framer-motion-3d";
@@ -20,12 +21,14 @@ export const Experience = (props) => {
   const CharacterGroup = useRef();
   const { viewport } = useThree();
   const [section, setSection] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionTimeoutRef = useRef(null);
 
   const responsiveRatio= viewport.width/12;
   const SecenResponsiveRatio=Math.max(0.5, Math.min(0.7*responsiveRatio,0.7))
   const data = useScroll();
  const [CharatherAnimation,setCharatherAnimation]=useState("Typing")
-  const { menuOpend ,isMobile } = props;
+  const { menuOpend, isMobile, onLaptopScreenClick } = props;
   
   const CameraPositionX = useMotionValue();
   const CameraLookAt = useMotionValue();
@@ -40,7 +43,13 @@ export const Experience = (props) => {
   useEffect(()=>{
     setCharatherAnimation('Falling')
     setTimeout(()=>{
-      setCharatherAnimation(section===0?"Typing":"Standing")
+      if(section === 0) {
+        setCharatherAnimation("Typing")
+      } else if(section === 2) {
+        setCharatherAnimation("Calling")
+      } else {
+        setCharatherAnimation("Standing")
+      }
     }
     ,600)
   },[section])
@@ -65,6 +74,14 @@ export const Experience = (props) => {
     // eluer.setFromQuaternion(quaternion,"XYZ");
     // console.log(eluer)
   });
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
+  }, []);
   return (
     <>
       <Sky />
@@ -93,15 +110,15 @@ export const Experience = (props) => {
               scaleZ: 1,
             },
             2:{
-              x: isMobile ? 1 : -2,
-              y:(-viewport.height *( isMobile ?2.5 :2)) +1,
+              x: isMobile ? 1 : 2,
+              y:  -viewport.height *2.5,
               z:0,
               rotateX:0,
-              rotateY: isMobile ? -Math.PI/4 : Math.PI/4,
+              rotateY: isMobile ? -Math.PI/4 :-Math.PI/4,
               rotateZ:0,
-              scaleX: isMobile ? 2 : 1.5,
-              scaleY: isMobile ? 2 : 1.5,
-              scaleZ: isMobile ? 2 : 1.5,
+              scaleX: isMobile ? 2 : 4,
+              scaleY: isMobile ? 2 : 4,
+              scaleZ: isMobile ? 2 : 4,
             },
             3:{
               x: 0.3,
@@ -119,7 +136,46 @@ export const Experience = (props) => {
             duration: 0.8,
           }}
         >
-          <Avtar animations={CharatherAnimation} />
+          {section !== 1 && <Avtar animations={CharatherAnimation} />}
+        </motion.group>
+
+        {/* Laptop Model for Section 1 (Skills) */}
+        <motion.group
+          position={[0, 0, 0]}
+          animate={""+section}
+          variants={{
+            0:{
+              opacity: 0,
+              scale: 0,
+              y: -10,
+            },
+            1:{
+              opacity: 1,
+              scale: isMobile ? 5: 8,
+              y: -viewport.height  +1,
+              x: isMobile ? 0 : 0,
+              z: 5,
+              rotateX: 0,
+              rotateY: 0,
+              rotateZ: 0,
+            },
+            2:{
+              opacity: 0,
+              scale: 0,
+              y: 0,
+            },
+            3:{
+              opacity: 0,
+              scale: 0,
+              y: -10,
+            },
+          }}
+          transition={{
+            duration: 1.2,
+            ease: "easeInOut",
+          }}
+        >
+          {section === 1 && <Laptop onScreenClick={onLaptopScreenClick} />}
         </motion.group>
       <motion.group
         position={[isMobile ? 0 :1.5 * responsiveRatio, isMobile ? -viewport.height/6 :2, 3]}
