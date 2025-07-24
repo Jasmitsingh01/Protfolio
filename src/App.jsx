@@ -34,26 +34,26 @@ function App() {
   };
   
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen overflow-hidden bg-gradient-dark">
       <MotionConfig transition={{
         ...framerMotionConfig
       }}>
         <LoadingScreen loading={loading} setLoading={setLoading}/>
         
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 42 }}>
-          <color attach="background" args={["#e6e7ff"]} />
+          <color attach="background" args={["#0f172a"]} />
           <ScrollControls pages={3} damping={0.1}>
             <ScrollManger section={section} onSectionChange={setSection} />
             <Scroll>
               <Suspense>
                 {loading && (
-                                      <Experience 
-                      section={section} 
-                      setSection={setSection} 
-                      menuOpend={menuOpend} 
-                      isMobile={isMobile} 
-                      onLaptopScreenClick={handleLaptopScreenClick}
-                    />
+                  <Experience 
+                    section={section} 
+                    setSection={setSection} 
+                    menuOpend={menuOpend} 
+                    isMobile={isMobile} 
+                    onLaptopScreenClick={handleLaptopScreenClick}
+                  />
                 )}
               </Suspense>
             </Scroll>
@@ -71,68 +71,61 @@ function App() {
         <Menu 
           onSectionChange={setSection}  
           menuOpend={menuOpend} 
-          setMenuopend={setMenuopend}                   
+          setMenuopend={setMenuopend}
+          section={section}                   
         />
 
         {/* Expanded Laptop Screen Overlay */}
         {isLaptopExpanded && (
           <div 
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              zIndex: 9999,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer'
-            }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[9999] flex items-center justify-center cursor-pointer animate-fade-in"
             onClick={() => setIsLaptopExpanded(false)}
           >
             <div 
-              style={{
-                width: '90vw',
-                height: '90vh',
-                backgroundColor: '#1a1a1a',
-                borderRadius: '10px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: '24px',
-                fontWeight: 'bold',
-                position: 'relative'
-              }}
+              className="w-[90vw] h-[90vh] bg-gradient-to-br from-dark-800 to-dark-900 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-white relative border border-dark-700 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Animated background */}
+              <div className="absolute inset-0 bg-gradient-accent opacity-5"></div>
+              
               {/* Close button */}
               <button
-                style={{
-                  position: 'absolute',
-                  top: '20px',
-                  right: '20px',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '30px',
-                  cursor: 'pointer',
-                  padding: '10px'
-                }}
+                className="absolute top-6 right-6 w-12 h-12 bg-dark-700/80 hover:bg-dark-600 border border-dark-600 rounded-full flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 group"
                 onClick={() => setIsLaptopExpanded(false)}
               >
-                ×
+                <span className="group-hover:rotate-90 transition-transform duration-300">×</span>
               </button>
               
               {/* Screen content */}
-              <div style={{ textAlign: 'center' }}>
-                <h1 style={{ marginBottom: '20px' }}>Jasmit Singh Portfolio</h1>
-                <p style={{ fontSize: '18px', opacity: 0.8 }}>Welcome to my interactive portfolio</p>
-                <p style={{ fontSize: '14px', marginTop: '20px', opacity: 0.6 }}>
-                  Click anywhere outside or press ESC to close
+              <div className="text-center z-10 max-w-2xl px-8">
+                <div className="mb-8">
+                  <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient animate-slide-up">
+                    Jasmit Singh
+                  </h1>
+                  <div className="h-1 w-32 bg-gradient-accent mx-auto rounded-full mb-6"></div>
+                </div>
+                
+                <p className="text-xl md:text-2xl text-dark-300 mb-8 animate-slide-up" style={{animationDelay: '0.2s'}}>
+                  Full Stack Developer & UI/UX Designer
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.4s'}}>
+                    <div className="text-3xl mb-2">🎨</div>
+                    <div className="font-semibold">Creative Design</div>
+                  </div>
+                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.6s'}}>
+                    <div className="text-3xl mb-2">💻</div>
+                    <div className="font-semibold">Modern Development</div>
+                  </div>
+                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.8s'}}>
+                    <div className="text-3xl mb-2">⚡</div>
+                    <div className="font-semibold">Performance Focused</div>
+                  </div>
+                </div>
+                
+                <p className="text-dark-400 text-sm animate-slide-up" style={{animationDelay: '1s'}}>
+                  Click anywhere outside, press ESC, or use the × button to close
                 </p>
               </div>
             </div>

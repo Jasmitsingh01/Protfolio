@@ -14,17 +14,21 @@ const ScollManger = (props) => {
   data.fill.classList.add("absolute");
   
   useEffect(() => {
+    console.log(`ScrollManager: Navigating to section ${section}`);
     gsap.to(data.el, {
       duration: 1,
       scrollTop: section * data.el.clientHeight,
+      ease: "power2.inOut",
       onStart: () => {
+        console.log(`ScrollManager: Animation started for section ${section}`);
         isAnimating.current = true;
       },
       onComplete: () => {
+        console.log(`ScrollManager: Animation completed for section ${section}`);
         isAnimating.current = false;
       },
     });
-  }, [section]);
+  }, [section, data.el]);
   
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -49,6 +53,7 @@ const ScollManger = (props) => {
         clearTimeout(sectionChangeTimeout.current);
       }
       sectionChangeTimeout.current = setTimeout(() => {
+        console.log(`ScrollManager: Auto-changing to section ${curSection} from scroll`);
         onSectionChange(curSection);
       }, 100);
     }
