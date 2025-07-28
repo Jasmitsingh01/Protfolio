@@ -277,53 +277,7 @@ const InteractiveSection = () => {
 
 const HTML = (props) => {
   const { mobileTop, setSection, section } = props;
-  const audioRef = useRef(null);
 
-  useEffect(() => {
-    let hasPlayed = false;
-    
-    // Create audio element
-    audioRef.current = new Audio("/SOUND.mp3");
-    audioRef.current.volume = 0.2; // Reduced volume for better UX
-    audioRef.current.loop = true;
-    
-    // Function to play audio only once
-    const playAudio = () => {
-      if (!hasPlayed && audioRef.current) {
-        audioRef.current.play().then(() => {
-          hasPlayed = true;
-          console.log("Background music started");
-        }).catch(error => {
-          console.log("Audio autoplay blocked, waiting for user interaction");
-        });
-      }
-    };
-
-    // Try to play immediately (will likely fail due to autoplay policy)
-    playAudio();
-
-    // Play after any user interaction
-    const handleInteraction = () => {
-      playAudio();
-    };
-
-    // Add multiple interaction listeners
-    const events = ['click', 'scroll', 'keydown', 'touchstart', 'mousedown'];
-    events.forEach(event => {
-      document.addEventListener(event, handleInteraction, { once: true, passive: true });
-    });
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-      // Clean up all event listeners
-      events.forEach(event => {
-        document.removeEventListener(event, handleInteraction);
-      });
-    };
-  }, []);
 
   return (
     <div className="interface-container relative">

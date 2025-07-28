@@ -82,7 +82,7 @@ function App() {
             onClick={() => setIsLaptopExpanded(false)}
           >
             <div 
-              className="w-[90vw] h-[90vh] bg-gradient-to-br from-dark-800 to-dark-900 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-white relative border border-dark-700 overflow-hidden"
+              className="w-[95vw] h-[95vh] bg-gradient-to-br from-dark-800 to-dark-900 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-white relative border border-dark-700 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Animated background */}
@@ -90,43 +90,35 @@ function App() {
               
               {/* Close button */}
               <button
-                className="absolute top-6 right-6 w-12 h-12 bg-dark-700/80 hover:bg-dark-600 border border-dark-600 rounded-full flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 group"
+                className="absolute top-6 right-6 w-12 h-12 bg-dark-700/80 hover:bg-dark-600 border border-dark-600 rounded-full flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 group z-10"
                 onClick={() => setIsLaptopExpanded(false)}
               >
                 <span className="group-hover:rotate-90 transition-transform duration-300">×</span>
               </button>
               
               {/* Screen content */}
-              <div className="text-center z-10 max-w-2xl px-8">
-                <div className="mb-8">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient animate-slide-up">
-                    Jasmit Singh
-                  </h1>
-                  <div className="h-1 w-32 bg-gradient-accent mx-auto rounded-full mb-6"></div>
+              <div className="w-full h-full flex flex-col">
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 border-b border-dark-700 bg-dark-800/50 backdrop-blur-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  </div>
+                  <div className="text-sm text-dark-300">Windows 11 GUI - Portfolio Demo</div>
+                  <div className="w-8"></div>
                 </div>
                 
-                <p className="text-xl md:text-2xl text-dark-300 mb-8 animate-slide-up" style={{animationDelay: '0.2s'}}>
-                  Full Stack Developer & UI/UX Designer
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.4s'}}>
-                    <div className="text-3xl mb-2">🎨</div>
-                    <div className="font-semibold">Creative Design</div>
-                  </div>
-                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.6s'}}>
-                    <div className="text-3xl mb-2">💻</div>
-                    <div className="font-semibold">Modern Development</div>
-                  </div>
-                  <div className="glass p-4 rounded-xl animate-slide-up" style={{animationDelay: '0.8s'}}>
-                    <div className="text-3xl mb-2">⚡</div>
-                    <div className="font-semibold">Performance Focused</div>
-                  </div>
+                {/* Iframe Container */}
+                <div className="flex-1 relative">
+                  <iframe
+                    src="https://windows11-gui.vercel.app/"
+                    className="w-full h-full border-0 rounded-b-2xl"
+                    title="Windows 11 GUI Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
-                
-                <p className="text-dark-400 text-sm animate-slide-up" style={{animationDelay: '1s'}}>
-                  Click anywhere outside, press ESC, or use the × button to close
-                </p>
               </div>
             </div>
           </div>
