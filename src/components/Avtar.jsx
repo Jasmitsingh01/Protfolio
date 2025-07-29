@@ -24,10 +24,10 @@ export function Avtar(props) {
   const model=useRef();
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
-  const {animations:typeinganimation}=useFBX('/src/animations/Typing.fbx');
-  const {animations:standinganimation}=useFBX('/src/animations/Standing Idle.fbx');
-  const {animations:fallinganimation}=useFBX('/src/animations/Falling Idle.fbx');
-  const {animations:callinganimation}=useFBX('/src/animations/calling.fbx');
+  const {animations:typeinganimation}=useFBX('/animations/Typing.fbx');
+  const {animations:standinganimation}=useFBX('/animations/Standing Idle.fbx');
+  const {animations:fallinganimation}=useFBX('/animations/Falling Idle.fbx');
+  const {animations:callinganimation}=useFBX('/animations/calling.fbx');
 
   typeinganimation[0].name="Typing";
   standinganimation[0].name="Standing";
@@ -107,7 +107,7 @@ export function Avtar(props) {
 }
 
 useGLTF.preload('models/Jasmitsingh.glb')
-useFBX.preload('/src/animations/Typing.fbx')
-useFBX.preload('/src/animations/Standing Idle.fbx')
-useFBX.preload('/src/animations/Falling Idle.fbx')
-useFBX.preload('/src/animations/calling.fbx')
+useFBX.preload('/animations/Typing.fbx')
+useFBX.preload('/animations/Standing Idle.fbx')
+useFBX.preload('/animations/Falling Idle.fbx')
+useFBX.preload('/animations/calling.fbx')

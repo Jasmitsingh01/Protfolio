@@ -18,7 +18,7 @@ export function Mylapy(props) {
   const { nodes, materials } = useGraph(clone)
   
   // Load the open animation
-  const { animations: openAnimation } = useFBX('/src/animations/open.fbx');
+  const { animations: openAnimation } = useFBX('/animations/open.fbx');
   
   // Set animation name
   if (openAnimation[0]) {
@@ -138,4 +138,4 @@ export function Mylapy(props) {
 }
 
 useGLTF.preload('/models/mylapy.glb')
-useFBX.preload('/src/animations/open.fbx')
+useFBX.preload('/animations/open.fbx')
